@@ -33,11 +33,9 @@ int main() {
   Planet b(Vec2f(100.f, 300.f), Vec2f(0.f, 500.f), 0.f, 10.f);
   Planet c(Vec2f(200.f, 2000.f), Vec2f(600.f, 200.f), 8e8f, 10.f);
   a.shape.setFillColor(sf::Color::Red);
-  std::vector<Planet> planets = {a, b};
+  std::vector<Planet> planets = {a, b, c};
   PlanetSystem planetSystem(planets);
   KeybindManager keybindManager(planetSystem, viewController, window);
-
-  cout << "working\n";
 
   while (window.isOpen()) {
     sf::Event event;
@@ -47,17 +45,12 @@ int main() {
       }
     }
 
-    cout << "working\n";
     window.clear(sf::Color::Blue);
     planetSystem.rk4Move();
-    cout << "rk4 worked\n";
     fps.update();
     window.draw(fps);
-    cout << "fps worked\n";
     keybindManager.update();
-    cout << "keybind worked\n";
     viewController.update(window);
-    cout << "view controller worked\n";
     window.draw(planetSystem);
     window.display();
   }

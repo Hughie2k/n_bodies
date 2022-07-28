@@ -31,7 +31,7 @@ KeybindManager::KeybindManager(PlanetSystem& planetSystem,
       new KeyboardBind(sf::Keyboard::Key::Hyphen,
                        &KeybindManager::ViewControllerZoomOut, *this, true);
   KeyboardBind* zoomIn =
-      new KeyboardBind(sf::Keyboard::Key::Add,
+      new KeyboardBind(sf::Keyboard::Key::Equal,
                        &KeybindManager::ViewControllerZoomIn, *this, true);
   MouseBind* selectPlanet =
       new MouseBind(sf::Mouse::Button::Left,
@@ -46,7 +46,6 @@ KeybindManager::KeybindManager(PlanetSystem& planetSystem,
 void KeybindManager::update() {
   time = clock.restart();
   for (Keybind<KeybindManager>* keybind : keybinds) {
-    cout << "about to segfault?\n";
     keybind->update();
   }
 }
