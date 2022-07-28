@@ -66,34 +66,42 @@ void PlanetSystem::rk4Move() {
   }
 }
 
+Vec2f* PlanetSystem::selectPlanet(const size_t& i) {
+  if (selected != planets.end()) {
+    selected->shape.setOutlineThickness(0.f);
+  }
+  if (selected - planets.begin() == i) {
+    selected = planets.end();
+    return nullptr;
+  }
+  selected = planets.begin() + i;
+  selected->shape.setOutlineThickness(2.f);
+  return &selected->pos;
+}
+
+Vec2f* PlanetSystem::selectNextPlanet() {
+  return selectPlanet(selected == planets.end()
+                          ? 0
+                          : (selected - planets.begin() + 1) % planets.size());
+}
+
 Vec2f* PlanetSystem::selectPlanetWithMouse(const Vec2f& mousePos) {
-  // Transform the mousePos here or elsewhere?
   for (size_t i = 0; i < planets.size(); ++i) {
     const Planet& planet = planets[i];
     if ((mousePos - planet.pos).squareSize() <
         planet.shape.getRadius() * planet.shape.getRadius()) {
-      if (&*selected == &planet) {
-        selected->shape.setOutlineThickness(0.f);
-        selected = planets.end();
-        return nullptr;
-      }
-      if (selected != planets.end()) {
-        selected->shape.setOutlineThickness(0.f);
-      }
-      selected = planets.begin() + i;
-      selected->shape.setOutlineThickness(2.f);
-      return &selected->pos;
+      return selectPlanet(i);
     }
   }
-  return nullptr;
+  return selected == planets.end() ? nullptr : &selected->pos;
 }
 
-void PlanetSystem::deletePlanet(ViewController& viewController) {
+Vec2f* PlanetSystem::deletePlanet() {
   if (selected != planets.end()) {
-    viewController.setLock(nullptr);
     planets.erase(selected);
     selected = planets.end();
   }
+  return nullptr;
 }
 
 /*

@@ -15,8 +15,11 @@ class PlanetSystem : public sf::Drawable {
   std::vector<Vec2f> accelCalc(const std::vector<Planet>&) const;
   virtual void draw(sf::RenderTarget&, sf::RenderStates) const override;
   void updateIO(sf::RenderWindow&);
+  Vec2f* selectPlanet(const size_t&);
+  Vec2f* selectNextPlanet();
+  Vec2f* selectPreviousPlanet();
   Vec2f* selectPlanetWithMouse(const Vec2f&);
-  void deletePlanet(ViewController&);
+  Vec2f* deletePlanet();
 
  private:
   std::vector<Planet> planets;

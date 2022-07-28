@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <cmath>
 #include <iostream>
 #include <vector>
 #include "fpscounter.hpp"
@@ -16,6 +17,7 @@ using std::cout;
   cout << '\n';
 
 int main() {
+  cout.precision(5);
   sf::RenderWindow window(sf::VideoMode(800, 600), "Gravity");
   window.setFramerateLimit(400);
 
@@ -45,13 +47,13 @@ int main() {
       }
     }
 
-    window.clear(sf::Color::Blue);
+    window.clear(sf::Color(0x121d24ff));
     planetSystem.rk4Move();
     fps.update();
-    window.draw(fps);
     keybindManager.update();
     viewController.update(window);
     window.draw(planetSystem);
+    window.setTitle("Gravity - " + std::to_string(fps.getFps()));
     window.display();
   }
   return 0;

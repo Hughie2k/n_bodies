@@ -28,5 +28,6 @@ class KeybindManager {
   void ViewControllerZoomIn();
   void ViewControllerZoomOut();
   void SelectPlanetWithMouse();
-  void PlanetSystemDeletePlanet();
+  void DeletePlanet();
+  void SelectNextPlanet();
 };

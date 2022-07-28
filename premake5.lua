@@ -16,3 +16,4 @@ project "Gravity"
     "sfml-window",
     "sfml-system"
   }
+  cppdialect "c++20"
