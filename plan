@@ -1,15 +1,2 @@
-What to do?
-    refactor?
-    refactor what?
-    refactor the planetsystem to only take types with radiuses + planet 
-    get rid of particle?
-    pretty useless
-    never going to use it
-    or add radius to particle
-    why is this hard
-    or make a class (planetsystemview) with a planetsystem, but the planetsystem which gets passed into the template needs a type with a radius
-    planetsystemview maintains shapes
-    can draw them if needed
-    can delete planets
-    good idea?
-    no fucking clue
+-> planetsystem done
+-> fix fpscounter, no more timer

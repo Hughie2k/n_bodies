@@ -1,0 +1,10 @@
+{
+  "files.associations": {
+    "type_traits": "cpp",
+    "vector": "cpp",
+    "functional": "cpp",
+    "string_view": "cpp",
+    "limits": "cpp",
+    "algorithm": "cpp"
+  }
+}
