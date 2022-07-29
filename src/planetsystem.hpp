@@ -15,6 +15,7 @@ class PlanetSystem : public sf::Drawable {
   std::vector<Vec2f> accelCalc(const std::vector<Planet>&) const;
   virtual void draw(sf::RenderTarget&, sf::RenderStates) const override;
   // void updateIO(sf::RenderWindow&);
+  bool planetIsSelected() const;
   Vec2f* selectPlanet(const size_t&);
   Vec2f* selectNextPlanet();
   Vec2f* selectPreviousPlanet();

@@ -23,6 +23,10 @@ void PlanetSystem::draw(sf::RenderTarget& target,
   }
 }
 
+bool PlanetSystem::planetIsSelected() const {
+  return selected != planets.end();
+}
+
 void PlanetSystem::eulerMove() {
   float dt = clock.restart().asSeconds();
   std::vector<Vec2f> accelerations = accelCalc(planets);
@@ -80,9 +84,7 @@ Vec2f* PlanetSystem::selectPlanet(const size_t& i) {
 }
 
 Vec2f* PlanetSystem::selectNextPlanet() {
-  return selectPlanet(selected == planets.end()
-                          ? 0
-                          : (selected - planets.begin() + 1) % planets.size());
+  return selectPlanet((selected - planets.begin() + 1) % planets.size());
 }
 
 Vec2f* PlanetSystem::selectPlanetWithMouse(const Vec2f& mousePos) {
@@ -105,7 +107,10 @@ Vec2f* PlanetSystem::deleteSelectedPlanet() {
 }
 
 void PlanetSystem::addPlanet(const Planet& planet) {
+  bool end = selected == planets.end();
   planets.push_back(planet);
+  if (end)
+    selected = planets.end();
 }
 
 PlanetSystem::PlanetSystem() : planets(), clock(), selected(planets.end()) {}

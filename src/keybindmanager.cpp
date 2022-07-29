@@ -114,8 +114,10 @@ void KeybindManager::DeletePlanet() {
 
 #pragma region tell the planetCreator to do stuff
 void KeybindManager::PlanetCreatorInitializePlanet() {
-  Vec2f mousePos = getNormalizedMousePosition();
-  planetCreator.initializePlanet(mousePos);
+  if (!planetSystem.planetIsSelected()) {
+    Vec2f mousePos = getNormalizedMousePosition();
+    planetCreator.initializePlanet(mousePos);
+  }
 }
 
 void KeybindManager::PlanetCreatorGrowPlanet() {

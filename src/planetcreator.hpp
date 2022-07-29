@@ -17,4 +17,5 @@ class PlanetCreator : public sf::Drawable {
   Planet planet;
   float massGrowthRate;    // Units (arbitrary) per second
   float radiusGrowthRate;  // Units (px) per second
+  bool planetIsGrowing;
 };
