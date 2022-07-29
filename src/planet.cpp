@@ -11,7 +11,9 @@ void Planet::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 Vec2f Planet::accel(const std::vector<Planet>& planets) const {
   Vec2f acc;
   for (const Planet& planet : planets) {
-    if (&planet == this) {
+    if (&planet == this ||
+        planet.shape.getRadius() * planet.shape.getRadius() >=
+            (pos - planet.pos).squareSize()) {
       continue;
     }
     Vec2f diff = planet.pos - pos;

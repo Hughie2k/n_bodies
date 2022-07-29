@@ -36,7 +36,7 @@ int main() {
   Planet b(Vec2f(100.f, 300.f), Vec2f(0.f, 500.f), 0.f, 10.f);
   Planet c(Vec2f(200.f, 2000.f), Vec2f(600.f, 200.f), 8e8f, 10.f);
   a.shape.setFillColor(sf::Color::Red);
-  std::vector<Planet> planets = {};
+  std::vector<Planet> planets = {a, b, c};
   PlanetSystem planetSystem(planets);
   KeybindManager keybindManager(planetSystem, viewController, window,
                                 planetCreator);
@@ -49,15 +49,18 @@ int main() {
       }
     }
 
-    window.clear(sf::Color(0x121d24ff));
-    planetSystem.rk4Move();
+    window.clear(sf::Color(0x0));
+    window.draw(planetSystem);
     fps.update();
     keybindManager.update();
+    planetSystem.rk4Move();  // Important that this line goes after
+                             // keybindManager.update(), or clicking on fast
+                             // moving planets stops working properly
     viewController.update(window);
-    window.draw(planetSystem);
     window.draw(planetCreator);
     window.setTitle("Gravity - " + std::to_string(fps.getFps()));
     window.display();
+    debug(planetSystem.momentum().size());
   }
   return 0;
 }

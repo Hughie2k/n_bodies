@@ -12,11 +12,12 @@ class PlanetSystem : public sf::Drawable {
 
   void eulerMove();
   void rk4Move();
+  Vec2f momentum() const;
   std::vector<Vec2f> accelCalc(const std::vector<Planet>&) const;
   virtual void draw(sf::RenderTarget&, sf::RenderStates) const override;
   // void updateIO(sf::RenderWindow&);
   bool planetIsSelected() const;
-  Vec2f* selectPlanet(const size_t&);
+  Vec2f* selectPlanet(const long int&);
   Vec2f* selectNextPlanet();
   Vec2f* selectPreviousPlanet();
   Vec2f* selectPlanetWithMouse(const Vec2f&);
