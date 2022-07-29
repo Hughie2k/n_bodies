@@ -9,10 +9,12 @@ using std::cout;
 
 KeybindManager::KeybindManager(PlanetSystem& planetSystem,
                                ViewController& view,
-                               sf::RenderWindow& window)
+                               sf::RenderWindow& window,
+                               PlanetCreator& planetCreator)
     : planetSystem(planetSystem),
       viewController(view),
       window(window),
+      planetCreator(planetCreator),
       time(),
       clock() {
   KeyboardBind* moveLeft =
@@ -36,11 +38,22 @@ KeybindManager::KeybindManager(PlanetSystem& planetSystem,
   MouseBind* selectPlanet =
       new MouseBind(sf::Mouse::Button::Left,
                     &KeybindManager::SelectPlanetWithMouse, *this, false);
-  KeyboardBind* deletePlanet =
-      new KeyboardBind(sf::Keyboard::Key::Delete,
-                       &KeybindManager::PlanetSystemDeletePlanet, *this, false);
-  keybinds = {moveLeft, moveRight, moveUp,       moveDown,
-              zoomIn,   zoomOut,   selectPlanet, deletePlanet};
+  KeyboardBind* deleteSelectedPlanet = new KeyboardBind(
+      sf::Keyboard::Key::Delete, &KeybindManager::DeletePlanet, *this, false);
+  KeyboardBind* nextPlanet = new KeyboardBind(
+      sf::Keyboard::Key::N, &KeybindManager::SelectNextPlanet, *this, false);
+  MouseBind* initializeAndReleasePlanet = new MouseBind(
+      sf::Mouse::Button::Right, &KeybindManager::PlanetCreatorInitializePlanet,
+      &KeybindManager::PlanetCreatorReleasePlanet, *this, false);
+  MouseBind* growPlanet =
+      new MouseBind(sf::Mouse::Button::Right,
+                    &KeybindManager::PlanetCreatorGrowPlanet, *this, true);
+  keybinds = {moveLeft,     moveRight,
+              moveUp,       moveDown,
+              zoomIn,       zoomOut,
+              selectPlanet, deleteSelectedPlanet,
+              nextPlanet,   initializeAndReleasePlanet,
+              growPlanet};
 }
 
 void KeybindManager::update() {
@@ -48,6 +61,14 @@ void KeybindManager::update() {
   for (Keybind<KeybindManager>* keybind : keybinds) {
     keybind->update();
   }
+}
+
+Vec2f KeybindManager::getNormalizedMousePosition() {
+  Vec2f mousePos = static_cast<Vec2f>(
+      static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)));
+  return Vec2f(mousePos.x / window.getSize().x * window.getView().getSize().x,
+               mousePos.y / window.getSize().y * window.getView().getSize().y) +
+         window.getView().getCenter() - window.getView().getSize() / 2.f;
 }
 
 #pragma region Move / zoom the camera with the viewController
@@ -77,17 +98,33 @@ void KeybindManager::ViewControllerZoomOut() {
 #pragma endregion
 
 #pragma region Select of delete planets with the planetSystem
+void KeybindManager::SelectNextPlanet() {
+  viewController.setLock(planetSystem.selectNextPlanet());
+}
+
 void KeybindManager::SelectPlanetWithMouse() {
-  Vec2f mousePos = static_cast<Vec2f>(
-      static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)));
-  mousePos =
-      Vec2f(mousePos.x / window.getSize().x * window.getView().getSize().x,
-            mousePos.y / window.getSize().y * window.getView().getSize().y) +
-      window.getView().getCenter() - window.getView().getSize() / 2.f;
+  Vec2f mousePos = getNormalizedMousePosition();
   viewController.setLock(planetSystem.selectPlanetWithMouse(mousePos));
 }
 
-void KeybindManager::PlanetSystemDeletePlanet() {
-  planetSystem.deletePlanet(viewController);
+void KeybindManager::DeletePlanet() {
+  viewController.setLock(planetSystem.deleteSelectedPlanet());
+}
+#pragma endregion
+
+#pragma region tell the planetCreator to do stuff
+void KeybindManager::PlanetCreatorInitializePlanet() {
+  if (!planetSystem.planetIsSelected()) {
+    Vec2f mousePos = getNormalizedMousePosition();
+    planetCreator.initializePlanet(mousePos);
+  }
+}
+
+void KeybindManager::PlanetCreatorGrowPlanet() {
+  planetCreator.growPlanet(time);
+}
+
+void KeybindManager::PlanetCreatorReleasePlanet() {
+  planetCreator.releasePlanet(planetSystem, getNormalizedMousePosition());
 }
 #pragma endregion

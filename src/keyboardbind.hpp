@@ -10,6 +10,11 @@ class KeyboardBind : public Keybind<KeybindManager> {
                void (KeybindManager::*const)(),
                KeybindManager&,
                const bool& keyRepeat = false);
+  KeyboardBind(const sf::Keyboard::Key&,
+               void (KeybindManager::*const)(),
+               void (KeybindManager::*const)(),
+               KeybindManager&,
+               const bool& keyRepeat = false);
   virtual void update() override;
 
  private:

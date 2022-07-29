@@ -1,9 +1,11 @@
 #include <SFML/Graphics.hpp>
+#include <cmath>
 #include <iostream>
 #include <vector>
 #include "fpscounter.hpp"
 #include "keybindmanager.hpp"
 #include "planet.hpp"
+#include "planetcreator.hpp"
 #include "planetsystem.hpp"
 #include "viewcontroller.hpp"
 using std::cout;
@@ -16,14 +18,15 @@ using std::cout;
   cout << '\n';
 
 int main() {
+  cout.precision(5);
   sf::RenderWindow window(sf::VideoMode(800, 600), "Gravity");
   window.setFramerateLimit(400);
 
   ViewController viewController(window.getDefaultView());
+  PlanetCreator planetCreator;
 
   sf::Font firaCode;
-  if (!firaCode.loadFromFile("/home/hugho/dev/n_body_simulation/build/bin/"
-                             "Debug/FiraCode-Regular.ttf")) {
+  if (!firaCode.loadFromFile("build/bin/Debug/FiraCode-Regular.ttf")) {
     cout << "failed to load FiraCode-Regular.ttf\n";
   }
 
@@ -33,9 +36,10 @@ int main() {
   Planet b(Vec2f(100.f, 300.f), Vec2f(0.f, 500.f), 0.f, 10.f);
   Planet c(Vec2f(200.f, 2000.f), Vec2f(600.f, 200.f), 8e8f, 10.f);
   a.shape.setFillColor(sf::Color::Red);
-  std::vector<Planet> planets = {a, b, c};
+  std::vector<Planet> planets = {};
   PlanetSystem planetSystem(planets);
-  KeybindManager keybindManager(planetSystem, viewController, window);
+  KeybindManager keybindManager(planetSystem, viewController, window,
+                                planetCreator);
 
   while (window.isOpen()) {
     sf::Event event;
@@ -45,13 +49,14 @@ int main() {
       }
     }
 
-    window.clear(sf::Color::Blue);
+    window.clear(sf::Color(0x121d24ff));
     planetSystem.rk4Move();
     fps.update();
-    window.draw(fps);
     keybindManager.update();
     viewController.update(window);
     window.draw(planetSystem);
+    window.draw(planetCreator);
+    window.setTitle("Gravity - " + std::to_string(fps.getFps()));
     window.display();
   }
   return 0;
