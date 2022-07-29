@@ -21,7 +21,7 @@ Vec2f Planet::accel(const std::vector<Planet>& planets) const {
   return acc;
 }
 
-Planet::Planet() : pos(), vel(), shape() {}
+Planet::Planet() : pos(), vel(), mass(0.f), shape() {}
 
 Planet::Planet(const Vec2f& pos) : pos(pos), shape() {
   shape.setOutlineColor(sf::Color::Green);

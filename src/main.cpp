@@ -5,6 +5,7 @@
 #include "fpscounter.hpp"
 #include "keybindmanager.hpp"
 #include "planet.hpp"
+#include "planetcreator.hpp"
 #include "planetsystem.hpp"
 #include "viewcontroller.hpp"
 using std::cout;
@@ -22,6 +23,7 @@ int main() {
   window.setFramerateLimit(400);
 
   ViewController viewController(window.getDefaultView());
+  PlanetCreator planetCreator;
 
   sf::Font firaCode;
   if (!firaCode.loadFromFile("/home/hugho/dev/n_body_simulation/build/bin/"
@@ -37,7 +39,8 @@ int main() {
   a.shape.setFillColor(sf::Color::Red);
   std::vector<Planet> planets = {a, b, c};
   PlanetSystem planetSystem(planets);
-  KeybindManager keybindManager(planetSystem, viewController, window);
+  KeybindManager keybindManager(planetSystem, viewController, window,
+                                planetCreator);
 
   while (window.isOpen()) {
     sf::Event event;
@@ -53,6 +56,7 @@ int main() {
     keybindManager.update();
     viewController.update(window);
     window.draw(planetSystem);
+    window.draw(planetCreator);
     window.setTitle("Gravity - " + std::to_string(fps.getFps()));
     window.display();
   }

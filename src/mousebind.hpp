@@ -10,6 +10,11 @@ class MouseBind : public Keybind<KeybindManager> {
             void (KeybindManager::*const)(),
             KeybindManager&,
             const bool& keyRepeat = false);
+  MouseBind(const sf::Mouse::Button&,
+            void (KeybindManager::*const)(),
+            void (KeybindManager::*const)(),
+            KeybindManager&,
+            const bool& keyRepeat = false);
   virtual void update() override;
 
  private:

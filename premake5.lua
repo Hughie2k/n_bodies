@@ -17,3 +17,4 @@ project "Gravity"
     "sfml-system"
   }
   cppdialect "c++20"
+  warnings "extra"
