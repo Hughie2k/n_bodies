@@ -70,7 +70,18 @@ void PlanetSystem::rk4Move() {
   }
 }
 
-Vec2f* PlanetSystem::selectPlanet(const size_t& i) {
+Vec2f PlanetSystem::momentum() const {
+  Vec2f momentum;
+  for (const Planet& planet : planets) {
+    momentum += planet.mass * planet.vel;
+  }
+  return momentum;
+}
+
+Vec2f* PlanetSystem::selectPlanet(const long int& i) {
+  if (i < 0 || i >= planets.size()) {
+    return nullptr;
+  }
   if (selected != planets.end()) {
     selected->shape.setOutlineThickness(0.f);
   }
@@ -84,7 +95,9 @@ Vec2f* PlanetSystem::selectPlanet(const size_t& i) {
 }
 
 Vec2f* PlanetSystem::selectNextPlanet() {
-  return selectPlanet((selected - planets.begin() + 1) % planets.size());
+  return planets.size()
+             ? selectPlanet((selected - planets.begin() + 1) % planets.size())
+             : nullptr;
 }
 
 Vec2f* PlanetSystem::selectPlanetWithMouse(const Vec2f& mousePos) {

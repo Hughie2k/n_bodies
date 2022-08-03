@@ -8,9 +8,12 @@ PlanetCreator::PlanetCreator()
       radiusGrowthRate(4.f),
       planetIsGrowing(false) {
   planet.shape.setOutlineColor(sf::Color::Green);
+  planet.shape.setFillColor(
+      sf::Color(0x100 * (rand() % 0xAAAAAA) + 0x555555FF));
 }
 
 void PlanetCreator::initializePlanet(const Vec2f& mousePos) {
+  std::srand(static_cast<unsigned>(mousePos.x));
   planet.pos = mousePos;
   planetIsGrowing = true;
 }
@@ -36,6 +39,8 @@ void PlanetCreator::releasePlanet(PlanetSystem& planetSystem,
   planet.shape.setRadius(0.f);
   planet.mass = 0.f;
   planetIsGrowing = false;
+  planet.shape.setFillColor(
+      sf::Color(0x100 * (rand() % 0xAAAAAA) + 0x555555FF));
 }
 
 void PlanetCreator::draw(sf::RenderTarget& target, sf::RenderStates) const {
