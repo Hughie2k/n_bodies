@@ -20,7 +20,7 @@ class KeybindManager {
   ViewController& viewController;
   sf::RenderWindow& window;
   PlanetCreator& planetCreator;
-  std::vector<Keybind<KeybindManager>*> keybinds;
+  std::vector<Keybind*> keybinds;
   sf::Time time;
   sf::Clock clock;
   // Sadly, namespaces within classes are forbidden, hence the ugly prefixes

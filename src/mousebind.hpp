@@ -4,7 +4,7 @@
 #include "keybind.hpp"
 #include "keybindmanager.hpp"
 
-class MouseBind : public Keybind<KeybindManager> {
+class MouseBind : public Keybind {
  public:
   MouseBind(const sf::Mouse::Button&,
             void (KeybindManager::*const)(),

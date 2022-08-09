@@ -4,7 +4,7 @@
 #include "keybind.hpp"
 #include "keybindmanager.hpp"
 
-class KeyboardBind : public Keybind<KeybindManager> {
+class KeyboardBind : public Keybind {
  public:
   KeyboardBind(const sf::Keyboard::Key&,
                void (KeybindManager::*const)(),

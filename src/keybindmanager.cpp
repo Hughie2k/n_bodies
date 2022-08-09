@@ -58,7 +58,7 @@ KeybindManager::KeybindManager(PlanetSystem& planetSystem,
 
 void KeybindManager::update() {
   time = clock.restart();
-  for (Keybind<KeybindManager>* keybind : keybinds) {
+  for (Keybind* keybind : keybinds) {
     keybind->update();
   }
 }

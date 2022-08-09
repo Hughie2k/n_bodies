@@ -1,34 +1,24 @@
 #pragma once
 
-template <class T>  // Template because of a circular dependency issue, class T
-                    // is always KeybindManager (for now)
+class KeybindManager;
+
 class Keybind {     // Putting the keyRepeat check in this base
                     // class would be beneficial
  public:
-  Keybind(void (T::*const onPress)(),
-          T& keybindManager,
-          const bool& keyRepeat = false)
-      : onPress(onPress),
-        onRelease(nullptr),
-        keybindManager(keybindManager),
-        keyRepeat(keyRepeat),
-        wasJustPressed(false) {}
-  Keybind(void (T::*const onPress)(),
-          void (T::*const onRelease)(),
-          T& keybindManager,
-          const bool& keyRepeat = false)
-      : onPress(onPress),
-        onRelease(onRelease),
-        keybindManager(keybindManager),
-        keyRepeat(keyRepeat),
-        wasJustPressed(false) {}
+  Keybind(void (KeybindManager::*const onPress)(),
+          KeybindManager& keybindManager,
+          const bool& keyRepeat = false);
+  Keybind(void (KeybindManager::*const onPress)(),
+          void (KeybindManager::*const onRelease)(),
+          KeybindManager& keybindManager,
+          const bool& keyRepeat = false);
   virtual void update() = 0;
-  void setKeyRepeat(const bool& newKeyRepeat) { keyRepeat = newKeyRepeat; }
+  void setKeyRepeat(const bool& newKeyRepeat);
 
  protected:
-  void (T::*const onPress)();
-  void (T::*const onRelease)();
-  T& keybindManager;
+  void (KeybindManager::*const onPress)();
+  void (KeybindManager::*const onRelease)();
+  KeybindManager& keybindManager;
   bool keyRepeat;
   bool wasJustPressed;
 };
